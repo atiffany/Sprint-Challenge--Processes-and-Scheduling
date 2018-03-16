@@ -96,7 +96,21 @@ int main(void)
         // Print out the parsed command line in args[]
         for (int i = 0; args[i] != NULL; i++) {
             printf("%d: '%s'\n", i, args[i]);
-        }
+            }
+
+            int child = fork();
+            if (child == 0)
+            {
+                printf("child\n");
+                execvp(args[0], args);
+            }
+            else 
+            {
+                int wait = waitpid(child, NULL, 0);
+                printf("parent process. child is %d\n", child);
+            }
+            
+
 
         #endif
     }
