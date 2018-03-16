@@ -7,11 +7,29 @@ Add your answers inline, below, with your pull request.
 1. List all of the main states a process may be in at any point in time on a
    standard Unix system. Briefly explain what each of these states mean.
 
+   *Created* - When first created, a process has not yet been moved into the 'ready' state.
+
+   *Waiting* - Also called 'ready'. Loaded into main memory and waiting to be executed on the CPU. Hangs out in a queue.
+
+   *Running* - In execution by one of the CPUs/cores. Will run in kernel mode or in user mode, depending on what it needs access to.
+
+   *Blocked* - Process cannot continue execution until an external change in state or an event occurs. If the process is waiting for input from a user, that process would go into a Blocked state.
+
+   *Terminated* - Process completes its execution or is manually killed. Process now becomes a zombie process.
+
 2. What is a Zombie Process? How does it get created? How does it get destroyed?
+
+  A Zombie process is a terminated process that has not yet been noticed by its parent process. When a process is terminated, either by completion of its task or by being manually killed, it becomes a zombie process. 
+
+  When that process' parent process calls the 'wait' system call to determine the zombie's exit status, the process is removed from the process table and that ends the process' lifetime. That means that the zombie exists in the event that details about the work it did. If the parent calls and uses that data, the zombie process is un-zombie-fied and gets to be destroyed. If that parent never calls with 'wait', then it will stay a zombie process and hang out on the process table.
 
 3. Describe the job of the Scheduler in the OS in general.
 
+The task of the scheduler is to determine which processes will be run and in which order. It sets the priority level of each process and allocates it time on the CPU to be processed.
+
 4. Describe the benefits of the MLFQ over a plain Round-Robin scheduler.
+
+The MLFQ makes up for some of the inadequacies of the Round-Robin scheduler--namely, that some tasks are of greater import than others. Giving each process equal time in equal order makes sense, unless you really need certain tasks to be performed ASAP. Some tasks may have less urgency to them and can wait. The MLFQ gives each process its turn, but handles the cases that not everything can wait an equal amount of time to be completed.
 
 ## Programming Exercise: The Lambda School Shell (`lssh`)
 
